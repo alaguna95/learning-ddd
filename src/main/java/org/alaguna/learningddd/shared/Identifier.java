@@ -1,4 +1,4 @@
-package org.alaguna.learningddd.input_data.training.domain;
+package org.alaguna.learningddd.shared;
 
 
 import java.io.Serializable;
