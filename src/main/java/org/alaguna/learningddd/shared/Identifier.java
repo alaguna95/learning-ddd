@@ -9,7 +9,7 @@ public abstract class Identifier implements Serializable {
     final protected String value;
 
     public Identifier(String value) {
-        ensureValidUuid(value);
+        //ensureValidUuid(value);
 
         this.value = value;
     }

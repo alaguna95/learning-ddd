@@ -15,4 +15,14 @@ public class QuestionForm {
         this.active = active;
         this.questions = questions;
     }
+
+    public QuestionFormId getQuestionFormId() {
+        return questionFormId;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+
 }

@@ -1,14 +1,12 @@
 package org.alaguna.learningddd.input_data.question_form.infraestructure;
 
-import org.springframework.data.jdbc.repository.query.Query;
+import org.alaguna.learningddd.input_data.question_form.domain.QuestionForm;
 import org.springframework.data.repository.CrudRepository;
 
-interface QuestionFormRepository extends CrudRepository<QuestionFormEntity, Long> {
+public interface QuestionFormRepository {
 
-        @Query("SELECT p.* FROM question_form f where f.type = 'PRE_COMPETITION' and f.active = 1 ")
-        QuestionFormEntity findActivePreCompetitionForm();
+        QuestionForm findActivePreCompetitionForm();
 
-        @Query("SELECT p.* FROM question_form f where f.type = 'POST_COMPETITION' and f.active = 1 ")
-        QuestionFormEntity findActivePostCompetitionForm();
+
 
 }

@@ -11,4 +11,16 @@ public class Question {
         this.name = name;
         this.sentence = sentence;
     }
+
+    public QuestionId getId() {
+        return id;
+    }
+
+    public QuestionName getName() {
+        return name;
+    }
+
+    public QuestionSentence getSentence() {
+        return sentence;
+    }
 }
