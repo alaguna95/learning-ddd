@@ -32,7 +32,7 @@ public class QuestionFormRepositoryImpl implements QuestionFormRepository{
     private QuestionFormQueryDTO findQuestionFormByType(String type){
         return jdbc.queryForObject(" select f.id, f.type, f.active from question_form f where f.type = ? and f.active = 1",
                 new QuestionFormRowMapper(),
-                new Object[]{type});
+                type);
     }
 
     private QuestionForm toQuestionForm(QuestionFormQueryDTO questionFormQuery, List<Question> questions){
@@ -47,7 +47,7 @@ public class QuestionFormRepositoryImpl implements QuestionFormRepository{
         return jdbc.query(
                 "select q.id, q.name, q.sentence from question q where q.question_form_id=?",
                 new ColumnMapRowMapper(),
-                new Object[]{questionFormId});
+                questionFormId);
     }
 
     private Question toQuestion(Map<String, Object> questionMap){

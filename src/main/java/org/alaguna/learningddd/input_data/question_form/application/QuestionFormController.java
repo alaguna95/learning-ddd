@@ -19,7 +19,7 @@ public class QuestionFormController {
 
 
     @GetMapping("/question-forms")
-    public ResponseEntity<QuestionFormOutputDTO> getQuestionForm( @RequestParam(value = "type", required = true) String type){
+    public ResponseEntity<QuestionFormOutputDTO> getQuestionForm( @RequestParam(value = "type") String type){
         return ResponseEntity.ok(questionFormGet.getQuestionFormByType(type));
     }
 
