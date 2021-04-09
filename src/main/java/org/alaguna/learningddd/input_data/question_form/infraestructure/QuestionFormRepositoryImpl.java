@@ -19,23 +19,26 @@ public class QuestionFormRepositoryImpl implements QuestionFormRepository{
     }
 
     @Override
-    public QuestionForm findActivePreCompetitionForm() {
-        List<Question> questions = findQuestionsByQuestionFormId("1").
+    public QuestionForm getQuestionFormByType(String type) {
+        QuestionFormQueryDTO questionFormQuery = findQuestionFormByType(type);
+
+        List<Question> questions = findQuestionsByQuestionFormId(questionFormQuery.getId()).
                 stream().map(this::toQuestion).collect(Collectors.toList());
-        return toQuestionForm(findQuestionFormById(), questions);
+
+        return toQuestionForm(questionFormQuery, questions);
     }
 
 
-    private Map<String, Object> findQuestionFormById(){
-        return jdbc.queryForObject(" select f.id, f.type, f.active from question_form f where f.type = 'PRE_COMPETITION' and f.active = 1",
-                new ColumnMapRowMapper(),
-                new Object[]{});
+    private QuestionFormQueryDTO findQuestionFormByType(String type){
+        return jdbc.queryForObject(" select f.id, f.type, f.active from question_form f where f.type = ? and f.active = 1",
+                new QuestionFormRowMapper(),
+                new Object[]{type});
     }
 
-    private QuestionForm toQuestionForm(Map<String, Object> questionFormMap, List<Question> questions){
-        return new QuestionForm(new QuestionFormId((String)questionFormMap.get("id")),
-                new QuestionFormType(QuestionFormTypeEnum.PRE_COMPETITION),
-                new QuestionFormActive(true),
+    private QuestionForm toQuestionForm(QuestionFormQueryDTO questionFormQuery, List<Question> questions){
+        return new QuestionForm(new QuestionFormId(questionFormQuery.getId()),
+                new QuestionFormType(questionFormQuery.getType()),
+                new QuestionFormActive(questionFormQuery.getActive()),
                 questions);
     }
 

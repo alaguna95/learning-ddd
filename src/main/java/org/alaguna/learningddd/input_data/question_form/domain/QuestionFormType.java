@@ -4,7 +4,7 @@ public class QuestionFormType {
 
     private QuestionFormTypeEnum value;
 
-    public QuestionFormType(QuestionFormTypeEnum value) {
-        this.value = value;
+    public QuestionFormType(String value) {
+        this.value = QuestionFormTypeEnum.valueOf(value);
     }
 }

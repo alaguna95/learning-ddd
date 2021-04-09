@@ -17,8 +17,8 @@ public class QuestionFormGet {
         this.questionFormRepository = questionFormRepository;
     }
 
-    public QuestionFormOutputDTO getQuestionForm(){
-        QuestionForm questionForm =  questionFormRepository.findActivePreCompetitionForm();
+    public QuestionFormOutputDTO getQuestionFormByType(String type){
+        QuestionForm questionForm =  questionFormRepository.getQuestionFormByType(type);
 
         List<QuestionOutputDTO> questionsDTO = new ArrayList<>();
         for(Question question : questionForm.getQuestions()){
