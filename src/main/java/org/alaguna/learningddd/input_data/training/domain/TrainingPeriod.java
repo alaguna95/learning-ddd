@@ -6,11 +6,6 @@ public class TrainingPeriod {
     private TrainingFinish finish;
 
     public TrainingPeriod(TrainingStart start, TrainingFinish finish){
-
-        if(start.value().isAfter(finish.value()) || start.value().equals(finish.value())){
-            throw new IllegalArgumentException();
-        }
-
         this.start = start;
         this.finish = finish;
 

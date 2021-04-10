@@ -9,19 +9,20 @@ import java.util.UUID;
 public class TrainingCreator {
 
     private TrainingRepository trainingRepository;
+    private TrainingValidator trainingValidator;
 
-    public TrainingCreator(TrainingRepository trainingRepository) {
+    public TrainingCreator(TrainingRepository trainingRepository, TrainingValidator trainingValidator) {
         this.trainingRepository = trainingRepository;
+        this.trainingValidator = trainingValidator;
     }
 
-    public void createTraining(CreateTrainingCommand command){
+    public void createTraining(TrainingCreateCommand command){
+
+        trainingValidator.checkTrainingCreate(command);
 
         TrainingId id = new TrainingId(UUID.randomUUID().toString());
-
-        TrainingStart start = new TrainingStart(command.getStart());
-        TrainingFinish end = new TrainingFinish(command.getFinish());
-        TrainingPeriod period = new TrainingPeriod(start, end);
-
+        TrainingPeriod period = new TrainingPeriod(new TrainingStart(command.getStart()),
+                new TrainingFinish(command.getFinish()));
         Training training = new Training(id, period);
 
         trainingRepository.createTraining(training);

@@ -15,7 +15,7 @@ public class TrainingController {
     }
 
     @PostMapping("/trainings")
-    public ResponseEntity<Object> createTraining(@RequestBody CreateTrainingCommand command){
+    public ResponseEntity<Object> createTraining(@RequestBody TrainingCreateCommand command){
         trainerCreator.createTraining(command);
         return ResponseEntity.noContent().build();
     }
