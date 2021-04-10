@@ -4,9 +4,9 @@ import org.alaguna.learningddd.shared.LocalDateTimeValueObject;
 
 import java.time.LocalDateTime;
 
-public class TrainingEnd extends LocalDateTimeValueObject {
+public class TrainingFinish extends LocalDateTimeValueObject {
 
-    public TrainingEnd(LocalDateTime value) {
+    public TrainingFinish(LocalDateTime value) {
         super(value);
 
         if(value == null){

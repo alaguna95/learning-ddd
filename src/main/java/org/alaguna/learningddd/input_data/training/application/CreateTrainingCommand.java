@@ -4,25 +4,20 @@ import java.time.LocalDateTime;
 
 public class CreateTrainingCommand {
 
-    private final String id;
     private final LocalDateTime start;
-    private final LocalDateTime end;
+    private final LocalDateTime finish;
 
-    public CreateTrainingCommand(String id, LocalDateTime start, LocalDateTime end){
-        this.id = id;
+    public CreateTrainingCommand(LocalDateTime start, LocalDateTime finish){
         this.start = start;
-        this.end = end;
-    }
+        this.finish = finish;
 
-    public String getId() {
-        return id;
     }
 
     public LocalDateTime getStart() {
         return start;
     }
 
-    public LocalDateTime getEnd() {
-        return end;
+    public LocalDateTime getFinish() {
+        return finish;
     }
 }

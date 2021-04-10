@@ -2,7 +2,7 @@ package org.alaguna.learningddd.input_data.question_form.application;
 
 import org.alaguna.learningddd.input_data.question_form.domain.Question;
 import org.alaguna.learningddd.input_data.question_form.domain.QuestionForm;
-import org.alaguna.learningddd.input_data.question_form.infraestructure.QuestionFormRepository;
+import org.alaguna.learningddd.input_data.question_form.domain.QuestionFormRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

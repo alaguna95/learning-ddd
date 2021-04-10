@@ -3,18 +3,25 @@ package org.alaguna.learningddd.input_data.training.domain;
 public class TrainingPeriod {
 
     private TrainingStart start;
-    private TrainingEnd end;
+    private TrainingFinish finish;
 
-    public TrainingPeriod(TrainingStart start, TrainingEnd end){
+    public TrainingPeriod(TrainingStart start, TrainingFinish finish){
 
-        if(start.value().isAfter(end.value()) || start.equals(end)){
+        if(start.value().isAfter(finish.value()) || start.value().equals(finish.value())){
             throw new IllegalArgumentException();
         }
 
         this.start = start;
-        this.end = end;
+        this.finish = finish;
 
 
     }
 
+    public TrainingStart getStart() {
+        return start;
+    }
+
+    public TrainingFinish getFinish() {
+        return finish;
+    }
 }

@@ -10,4 +10,11 @@ public class Training {
         this.period = period;
     }
 
+    public TrainingId getId() {
+        return id;
+    }
+
+    public TrainingPeriod getPeriod() {
+        return period;
+    }
 }

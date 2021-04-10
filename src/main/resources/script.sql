@@ -37,3 +37,14 @@ insert into question (id,question_form_id,name,sentence) values('4','2','Happine
 insert into question (id,question_form_id,name,sentence) values('5','2','Motivation','Between 1-10, what was you motivation state after end  the training?');
 insert into question (id,question_form_id,name,sentence) values('6','2','Attention','Between 1-10, what was you attention state after end the training?');
 insert into question (id,question_form_id,name,sentence) values('7','2','Performance','Between 1-10, what was you performance in the training?');
+
+
+-- Training table
+create table training (
+   id varchar(50) not null,
+   start timestamp not null,
+   finish timestamp not null
+);
+
+alter table training add
+constraint training_id_pk primary key(id);
