@@ -10,4 +10,6 @@ public interface TrainingRepository {
 
     boolean existSomeTrainingInThisPeriod(LocalDateTime start, LocalDateTime end);
 
+    Training getTrainingById(String id);
+
 }

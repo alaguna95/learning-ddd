@@ -6,6 +6,4 @@ public interface QuestionFormRepository {
 
         QuestionForm getQuestionFormByType(String type);
 
-
-
 }

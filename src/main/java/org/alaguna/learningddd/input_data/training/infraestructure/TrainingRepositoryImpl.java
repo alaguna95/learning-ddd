@@ -1,16 +1,14 @@
 package org.alaguna.learningddd.input_data.training.infraestructure;
 
-import org.alaguna.learningddd.input_data.training.domain.Training;
-import org.alaguna.learningddd.input_data.training.domain.TrainingRepository;
+import org.alaguna.learningddd.input_data.training.domain.*;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.ColumnMapRowMapper;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+
 
 @Repository
 public class TrainingRepositoryImpl implements TrainingRepository {
@@ -46,4 +44,21 @@ public class TrainingRepositoryImpl implements TrainingRepository {
 
         return jdbc.query(query, namedParameters, BeanPropertyRowMapper.newInstance(String.class)).size() > 0;
     }
+
+    @Override
+    public Training getTrainingById(String id) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource().
+                addValue("id", id);
+
+        TrainingQueryDTO trainingDTO = jdbc.queryForObject(" select t.id, t.start, t.finish from training t where t.id = :id",
+                namedParameters,
+                new TrainingRowMapper());
+
+        return new Training(new TrainingId(trainingDTO.getId()), //TODO: NULL POINTER REVISAR
+                new TrainingPeriod(
+                        new TrainingStart(trainingDTO.getStart()),
+                        new TrainingFinish(trainingDTO.getFinish())));
+    }
+
+
 }
