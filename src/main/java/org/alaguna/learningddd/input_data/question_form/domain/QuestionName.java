@@ -1,6 +1,6 @@
 package org.alaguna.learningddd.input_data.question_form.domain;
 
-import org.alaguna.learningddd.shared.StringValueObject;
+import org.alaguna.learningddd.shared.domain.StringValueObject;
 
 public class QuestionName extends StringValueObject {
 

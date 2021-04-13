@@ -1,6 +1,6 @@
 package org.alaguna.learningddd.input_data.training.domain;
 
-import org.alaguna.learningddd.shared.LocalDateTimeValueObject;
+import org.alaguna.learningddd.shared.domain.LocalDateTimeValueObject;
 
 import java.time.LocalDateTime;
 

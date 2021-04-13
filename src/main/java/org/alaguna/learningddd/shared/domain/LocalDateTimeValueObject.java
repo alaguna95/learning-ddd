@@ -1,4 +1,4 @@
-package org.alaguna.learningddd.shared;
+package org.alaguna.learningddd.shared.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
