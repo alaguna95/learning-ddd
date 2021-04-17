@@ -20,11 +20,13 @@ public class RabbitMqDomainEventsConsumer {
 
     @RabbitListener( autoStartup = "true", queues = "increment_training_on_training_created")
     public void consumer(Message message) throws Exception {
-        System.out.println(message);
 
-        String queue = message.getMessageProperties().getConsumerQueue();
-
-        handleConsumptionError(message, queue);
+        try{
+            System.out.println(message);
+        } catch (Exception error) {
+            String queue = message.getMessageProperties().getConsumerQueue();
+            handleConsumptionError(message, queue);
+        }
     }
 
 
