@@ -27,13 +27,27 @@ public class RabbitMqEventBusConfiguration {
     @Bean
     public Declarables declaration() {
 
-        String exchangeName = "domain_events";
 
-        TopicExchange    domainEventsExchange           = new TopicExchange(exchangeName, true, false);
-        List<Declarable> declarables                    = new ArrayList<>();
+        TopicExchange domainEventsExchange = new TopicExchange("domain_events", true, false);
+        TopicExchange deadLetterExchange = new TopicExchange("dead_letter", true, false);
+
+        List<Declarable> declarables = new ArrayList<>();
         declarables.add(domainEventsExchange);
+        declarables.add(deadLetterExchange);
 
+
+        declarables.addAll(createQueueDomainEvents(domainEventsExchange));
+        declarables.addAll(createQueueDeadLetter(deadLetterExchange));
+
+        return new Declarables(declarables);
+    }
+
+
+    private List<Declarable> createQueueDomainEvents(TopicExchange domainEventsExchange ){
         String queueName = "increment_training_on_training_created";
+
+
+        List<Declarable> queueAndBinding = new ArrayList<>();
 
         Queue queue = QueueBuilder.durable(queueName).build();
 
@@ -42,16 +56,37 @@ public class RabbitMqEventBusConfiguration {
                 .to(domainEventsExchange)
                 .with("training_created");
 
+        Binding fromExchangeSameQueueBinding2 = BindingBuilder
+                .bind(queue)
+                .to(domainEventsExchange)
+                .with("increment_training_on_training_created");
 
+        queueAndBinding.add(queue);
+        queueAndBinding.add(fromExchangeSameQueueBinding);
+        queueAndBinding.add(fromExchangeSameQueueBinding2);
 
-        List<Declarable> queuesAndBindings = new ArrayList<>();
-        queuesAndBindings.add(queue);
-        queuesAndBindings.add(fromExchangeSameQueueBinding);
-
-        declarables.addAll(queuesAndBindings);
-
-        return new Declarables(declarables);
+        return queueAndBinding;
     }
 
+    private List<Declarable> createQueueDeadLetter(TopicExchange deadLetterExchange){
 
+
+        List<Declarable> queueAndBinding = new ArrayList<>();
+
+        String deadLetterQueueName = "dead_letter.increment_training_on_training_created";
+
+
+        Queue deadLetterQueue = QueueBuilder.durable(deadLetterQueueName).build();
+
+        Binding fromDeadLetterExchangeSameQueueBinding = BindingBuilder
+                .bind(deadLetterQueue)
+                .to(deadLetterExchange)
+                .with("increment_training_on_training_created");
+
+        queueAndBinding.add(deadLetterQueue);
+        queueAndBinding.add(fromDeadLetterExchangeSameQueueBinding);
+
+
+        return queueAndBinding;
+    }
 }
