@@ -7,4 +7,8 @@ public class QuestionFormType {
     public QuestionFormType(String value) {
         this.value = QuestionFormTypeEnum.valueOf(value);
     }
+
+    public QuestionFormTypeEnum getValue() {
+        return value;
+    }
 }

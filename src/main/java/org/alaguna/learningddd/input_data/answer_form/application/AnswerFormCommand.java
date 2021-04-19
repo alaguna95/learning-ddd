@@ -6,7 +6,7 @@ public class AnswerFormCommand {
 
     private String formType;
     private String trainingId;
-    private String questionId;
+    private String questionFormId;
     private List<AnswerCommand> answers;
 
     public String getFormType() {
@@ -17,8 +17,8 @@ public class AnswerFormCommand {
         return trainingId;
     }
 
-    public String getQuestionId() {
-        return questionId;
+    public String getQuestionFormId() {
+        return questionFormId;
     }
 
     public List<AnswerCommand> getAnswers() {

@@ -48,3 +48,49 @@ create table training (
 
 alter table training add
 constraint training_id_pk primary key(id);
+
+
+-- Answer Form
+create table answer_form (
+    id varchar(50) not null,
+    training_id varchar(50) not null,
+    question_form_id varchar(50) not null,
+    type varchar(50) not null
+);
+
+alter table answer_form add
+constraint answer_form_id_pk primary key(id);
+
+alter table answer_form add
+constraint answer_form_question_form_id_fk foreign key(question_form_id)
+references question_form(id);
+
+alter table answer_form add
+constraint answer_form_training_id_fk foreign key(training_id)
+references training(id);
+
+create index answer_form_question_form_id_i on answer_form(question_form_id);
+create index answer_form_training_id_i on answer_form(training_id);
+
+
+create table answer(
+    id varchar(50) not null,
+    answer_form_id varchar(50) not null,
+    question_id varchar(50) not null,
+    value smallint not null
+);
+
+alter table answer add
+constraint answer_id_pk primary key(id);
+
+
+alter table answer add
+constraint answer_question_id_fk foreign key(question_id)
+references question(id);
+
+alter table answer add
+constraint answer_answer_form_id_fk foreign key(answer_form_id)
+references answer_form(id);
+
+create index answer_question_id_i on answer(question_id);
+create index answer_answer_form_id_i on answer(answer_form_id);
