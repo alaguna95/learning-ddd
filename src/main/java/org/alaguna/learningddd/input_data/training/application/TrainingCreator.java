@@ -10,20 +10,20 @@ import java.util.UUID;
 public class TrainingCreator {
 
     private TrainingRepository trainingRepository;
-    private TrainingValidator trainingValidator;
     private EventBus eventBus;
 
-    public TrainingCreator(TrainingRepository trainingRepository, TrainingValidator trainingValidator, EventBus eventBus) {
+    public TrainingCreator(TrainingRepository trainingRepository, EventBus eventBus) {
         this.trainingRepository = trainingRepository;
-        this.trainingValidator = trainingValidator;
         this.eventBus = eventBus;
     }
 
     public void createTraining(TrainingCreateCommand command){
 
-        trainingValidator.checkTrainingCreate(command);
+        if(trainingRepository.existSomeTrainingInThisPeriod(command.getStart(), command.getFinish())){
+            throw new IllegalArgumentException();
+        }
 
-        TrainingId id = new TrainingId(UUID.randomUUID().toString());
+        TrainingId id = new TrainingId(command.getId());
         TrainingPeriod period = new TrainingPeriod(new TrainingStart(command.getStart()),
                 new TrainingFinish(command.getFinish()));
         Training training = Training.create(id, period);

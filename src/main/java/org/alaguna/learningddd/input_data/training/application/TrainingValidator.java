@@ -13,22 +13,9 @@ public class TrainingValidator {
     }
 
     public void checkTrainingCreate(TrainingCreateCommand trainingCommand){
-        if(trainingCommand.getStart() == null){
-            throw  new IllegalArgumentException();
-        }
 
-        if(trainingCommand.getFinish() == null){
-            throw  new IllegalArgumentException();
-        }
 
-        if(trainingCommand.getStart().isAfter(trainingCommand.getFinish())
-                || trainingCommand.getStart().equals(trainingCommand.getFinish())){
-                throw new IllegalArgumentException();
-        }
 
-        if(trainingRepository.existSomeTrainingInThisPeriod(trainingCommand.getStart(), trainingCommand.getFinish())){
-            throw new IllegalArgumentException();
-        }
 
     }
 

@@ -1,7 +1,6 @@
 package org.alaguna.learningddd.input_data.training.domain;
 
 import org.alaguna.learningddd.shared.domain.AggregateRoot;
-import org.alaguna.learningddd.shared.domain.bus.DomainEvent;
 import org.alaguna.learningddd.shared.domain.training.TrainingCreatedDomainEvent;
 
 public class Training extends AggregateRoot {
