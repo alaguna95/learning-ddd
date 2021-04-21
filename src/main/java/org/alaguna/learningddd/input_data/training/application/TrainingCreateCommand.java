@@ -13,8 +13,6 @@ public class TrainingCreateCommand {
         this.id = id;
         this.start = start;
         this.finish = finish;
-
-        checkIsValid();
     }
 
     public String getId() {
@@ -29,21 +27,5 @@ public class TrainingCreateCommand {
         return finish;
     }
 
-    private void checkIsValid(){
-        UUID.fromString(id);
 
-        if(start == null){
-            throw  new IllegalArgumentException();
-        }
-
-        if(finish == null){
-            throw  new IllegalArgumentException();
-        }
-
-        if(start.isAfter(finish) || start.equals(finish)){
-            throw new IllegalArgumentException();
-        }
-
-
-    }
 }

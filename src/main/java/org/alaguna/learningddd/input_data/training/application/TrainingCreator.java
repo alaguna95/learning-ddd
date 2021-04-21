@@ -19,6 +19,20 @@ public class TrainingCreator {
 
     public void createTraining(TrainingCreateCommand command){
 
+        UUID.fromString(command.getId());
+
+        if(command.getStart() == null){
+            throw  new IllegalArgumentException();
+        }
+
+        if(command.getFinish() == null){
+            throw  new IllegalArgumentException();
+        }
+
+        if(command.getStart().isAfter(command.getFinish()) || command.getStart().equals(command.getFinish())){
+            throw new IllegalArgumentException();
+        }
+
         if(trainingRepository.existSomeTrainingInThisPeriod(command.getStart(), command.getFinish())){
             throw new IllegalArgumentException();
         }
