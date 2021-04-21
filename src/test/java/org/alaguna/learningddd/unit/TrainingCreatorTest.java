@@ -2,6 +2,7 @@ package org.alaguna.learningddd.unit;
 
 import org.alaguna.learningddd.input_data.training.application.TrainingCreateCommand;
 import org.alaguna.learningddd.input_data.training.application.TrainingCreator;
+import org.alaguna.learningddd.input_data.training.application.TrainingValidator;
 import org.alaguna.learningddd.input_data.training.domain.Training;
 import org.alaguna.learningddd.input_data.training.domain.TrainingRepository;
 import org.alaguna.learningddd.objects.TrainingCreateCommandBuilder;
@@ -30,7 +31,8 @@ public class TrainingCreatorTest {
     public void setUp(){
         trainingRepository = mock(TrainingRepository.class);
         eventBus = mock(EventBus.class);
-        trainingCreator = new TrainingCreator( trainingRepository,eventBus);
+        TrainingValidator trainingValidator = new TrainingValidator(trainingRepository);
+        trainingCreator = new TrainingCreator( trainingRepository,trainingValidator, eventBus);
     }
 
     @Test
@@ -42,9 +44,9 @@ public class TrainingCreatorTest {
     }
 
     @Test
-    public void throwExceptionWhenIdIsNotValid(){
+    public void throwExceptionWhenIdIsNotUUID(){
         assertThrows(IllegalArgumentException.class , () -> trainingCreator.createTraining(
-                new TrainingCreateCommandBuilder().withId("1").build()));
+                new TrainingCreateCommandBuilder().withId("12121AS").build()));
 
     }
 

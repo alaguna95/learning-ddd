@@ -10,32 +10,18 @@ import java.util.UUID;
 public class TrainingCreator {
 
     private TrainingRepository trainingRepository;
+    private TrainingValidator trainingValidator;
     private EventBus eventBus;
 
-    public TrainingCreator(TrainingRepository trainingRepository, EventBus eventBus) {
+    public TrainingCreator(TrainingRepository trainingRepository, TrainingValidator trainingValidator, EventBus eventBus) {
         this.trainingRepository = trainingRepository;
+        this.trainingValidator = trainingValidator;
         this.eventBus = eventBus;
     }
 
     public void createTraining(TrainingCreateCommand command){
 
-        UUID.fromString(command.getId());
-
-        if(command.getStart() == null){
-            throw  new IllegalArgumentException();
-        }
-
-        if(command.getFinish() == null){
-            throw  new IllegalArgumentException();
-        }
-
-        if(command.getStart().isAfter(command.getFinish()) || command.getStart().equals(command.getFinish())){
-            throw new IllegalArgumentException();
-        }
-
-        if(trainingRepository.existSomeTrainingInThisPeriod(command.getStart(), command.getFinish())){
-            throw new IllegalArgumentException();
-        }
+        trainingValidator.checkTrainingCreate(command);
 
         TrainingId id = new TrainingId(command.getId());
         TrainingPeriod period = new TrainingPeriod(new TrainingStart(command.getStart()),
