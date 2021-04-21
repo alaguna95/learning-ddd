@@ -1,8 +1,10 @@
 package org.alaguna.learningddd.input_data.training.domain;
 
+import lombok.EqualsAndHashCode;
 import org.alaguna.learningddd.shared.domain.AggregateRoot;
 import org.alaguna.learningddd.shared.domain.training.TrainingCreatedDomainEvent;
 
+@EqualsAndHashCode(callSuper=false)
 public class Training extends AggregateRoot {
 
     private TrainingId id;
@@ -28,4 +30,5 @@ public class Training extends AggregateRoot {
     public TrainingPeriod getPeriod() {
         return period;
     }
+
 }

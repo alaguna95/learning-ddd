@@ -1,10 +1,12 @@
 package org.alaguna.learningddd.shared.domain.training;
 
+import lombok.EqualsAndHashCode;
 import org.alaguna.learningddd.shared.domain.bus.DomainEvent;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
+@EqualsAndHashCode(callSuper = false)
 public class TrainingCreatedDomainEvent extends DomainEvent {
 
     public TrainingCreatedDomainEvent(String aggregateId) {

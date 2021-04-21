@@ -102,8 +102,11 @@ public class TrainingCreatorTest {
 
         when(trainingRepository.existSomeTrainingInThisPeriod(command.getStart(), command.getFinish())).thenReturn(false);
 
+        trainingCreator.createTraining(command);
+
         verify(trainingRepository, times(1)).createTraining(training);
         verify(eventBus, times(1)).publish(Arrays.asList(event));
+
     }
 
 

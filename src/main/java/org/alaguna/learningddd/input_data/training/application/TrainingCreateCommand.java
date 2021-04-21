@@ -1,8 +1,10 @@
 package org.alaguna.learningddd.input_data.training.application;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import lombok.Getter;
 
+import java.time.LocalDateTime;
+
+@Getter
 public class TrainingCreateCommand {
 
     private final String id;
@@ -13,18 +15,6 @@ public class TrainingCreateCommand {
         this.id = id;
         this.start = start;
         this.finish = finish;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public LocalDateTime getStart() {
-        return start;
-    }
-
-    public LocalDateTime getFinish() {
-        return finish;
     }
 
 

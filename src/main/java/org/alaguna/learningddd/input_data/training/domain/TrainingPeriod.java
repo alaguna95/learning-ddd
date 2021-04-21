@@ -1,5 +1,10 @@
 package org.alaguna.learningddd.input_data.training.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@EqualsAndHashCode
+@ToString
 public class TrainingPeriod {
 
     private TrainingStart start;
