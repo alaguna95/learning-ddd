@@ -4,11 +4,15 @@ import java.util.List;
 
 public class AnswerFormCommand {
 
+    private String id;
     private String formType;
     private String trainingId;
     private String questionFormId;
     private List<AnswerCommand> answers;
 
+    public String getId() {
+        return id;
+    }
     public String getFormType() {
         return formType;
     }

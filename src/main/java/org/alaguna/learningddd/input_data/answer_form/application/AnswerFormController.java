@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AnswerFormController {
 
-    private CreateAnswerForm createAnswerForm;
+    private AnswerFormCreate createAnswerForm;
 
-    public AnswerFormController(CreateAnswerForm createAnswerForm) {
+    public AnswerFormController(AnswerFormCreate createAnswerForm) {
         this.createAnswerForm = createAnswerForm;
     }
 
