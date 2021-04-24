@@ -7,10 +7,12 @@ import org.alaguna.learningddd.input_data.question_form.domain.QuestionFormType;
 import org.alaguna.learningddd.input_data.question_form.domain.QuestionId;
 import org.alaguna.learningddd.input_data.training.domain.Training;
 import org.alaguna.learningddd.input_data.training.domain.TrainingId;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class AnswerFormValidator {
 
     private AnswerFormRepository answerFormRepository;
