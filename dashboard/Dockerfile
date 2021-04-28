@@ -1,7 +1,5 @@
-FROM gradle
-RUN mkdir /app
+FROM gradle:7.0.0-jdk11
 WORKDIR /app
 COPY . /app
-RUN gradle clean
+RUN cd dashboard
 RUN gradle build
-CMD "gradle" "bootRun"
