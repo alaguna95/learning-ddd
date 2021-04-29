@@ -16,7 +16,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.19'
+	implementation 'org.postgresql:postgresql'
 
 	compileOnly 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
@@ -24,6 +24,10 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.testcontainers:junit-jupiter:1.15.1'
+	testImplementation 'org.testcontainers:testcontainers:1.15.1'
+	testImplementation 'org.testcontainers:postgresql:1.15.1'
+	testImplementation 'org.flywaydb:flyway-core'
 }
 
 test {
