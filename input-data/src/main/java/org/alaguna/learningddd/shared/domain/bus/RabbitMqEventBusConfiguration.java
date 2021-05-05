@@ -16,8 +16,8 @@ public class RabbitMqEventBusConfiguration {
     public CachingConnectionFactory connection()  {
         CachingConnectionFactory factory = new CachingConnectionFactory();
 
-        factory.setHost("rabbitmq");
-        factory.setPort(5672);
+        factory.setHost("localhost");
+        factory.setPort(5630);
         factory.setUsername("rabbitmq");
         factory.setPassword("2020");
 
