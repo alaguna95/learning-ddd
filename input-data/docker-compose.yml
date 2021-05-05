@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:13.2@sha256:61d5d8ef6cb4e2035f053f26b6b455c201a809354084cc8426b6904b8dd35602
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "2020"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - 15432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - microservices
+
+  java:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    networks:
+      - microservices
+    ports:
+      - 8081:8081
+
+volumes:
+  pgdata: {}
+networks:
+  microservices:
+    external:
+      name: microservices

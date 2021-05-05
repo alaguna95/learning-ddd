@@ -1,22 +1,5 @@
 version: "3.7"
 services:
-  postgres:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: "2020"
-      PGDATA: /var/lib/postgresql/data/pgdata
-    ports:
-      - 15432:5432
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      postgres_network:
-        aliases:
-          - postgres_host
 
   rabbitmq:
     container_name: rabbitmq
@@ -28,10 +11,9 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=rabbitmq
       - RABBITMQ_DEFAULT_PASS=2020
+    networks:
+      - microservices
 
-volumes:
-  pgdata: {}
 networks:
-  postgres_network:
-    name: postgres_net
-    driver: bridge
+  microservices:
+    name: microservices
