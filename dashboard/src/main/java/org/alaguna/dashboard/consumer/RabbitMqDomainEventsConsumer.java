@@ -1,9 +1,12 @@
-package org.alaguna.dashboard;
+package org.alaguna.dashboard.consumer;
 
+import org.alaguna.dashboard.RabbitMqPublisher;
+import org.alaguna.dashboard.consumer.Consumer;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -13,16 +16,25 @@ public class RabbitMqDomainEventsConsumer {
 
     private final int  MAX_RETRIES = 2;
     private final RabbitMqPublisher publisher;
+    private final ConsumerWrapper consumerWrapper;
 
-    public RabbitMqDomainEventsConsumer(RabbitMqPublisher publisher) {
+    @Autowired
+    public RabbitMqDomainEventsConsumer(RabbitMqPublisher publisher,  ConsumerWrapper consumerWrapper
+    ) {
         this.publisher = publisher;
+        this.consumerWrapper = consumerWrapper;
     }
 
     @RabbitListener( autoStartup = "true", queues = "increment_training_on_training_created")
     public void consumer(Message message) throws Exception {
 
+
+
         try{
-            System.out.println(message);
+            Consumer consumer = consumerWrapper.getConsumers().get(message.getMessageProperties().getConsumerQueue());
+            consumer.on(null);
+
+
         } catch (Exception error) {
             String queue = message.getMessageProperties().getConsumerQueue();
             handleConsumptionError(message, queue);
