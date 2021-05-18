@@ -1,7 +1,10 @@
 package org.alaguna.dashboard.consumer;
 
+import lombok.Getter;
+
 import java.util.Map;
 
+@Getter
 public class ConsumerWrapper {
 
     public ConsumerWrapper(Map<String, Consumer> consumers){
@@ -9,9 +12,5 @@ public class ConsumerWrapper {
     }
 
     private Map<String, Consumer> consumers;
-
-    public Map<String, Consumer> getConsumers() {
-        return consumers;
-    }
 
 }
