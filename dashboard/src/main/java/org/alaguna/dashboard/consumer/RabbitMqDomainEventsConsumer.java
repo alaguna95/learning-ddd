@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class RabbitMqDomainEventsConsumer {
 
-    private final int  MAX_RETRIES = 2;
+    private final static int MAX_RETRIES = 2;
     private final RabbitMqPublisher publisher;
     private final ConsumerWrapper consumerWrapper;
 
@@ -26,7 +26,7 @@ public class RabbitMqDomainEventsConsumer {
     }
 
     @RabbitListener( autoStartup = "true", queues = "increment_training_on_training_created")
-    public void consumer(Message message) throws Exception {
+    public void consumer(Message message) {
 
 
 

@@ -11,6 +11,6 @@ public class ConsumerWrapper {
         this.consumers = consumers;
     }
 
-    private Map<String, Consumer> consumers;
+    private final Map<String, Consumer>  consumers;
 
 }
