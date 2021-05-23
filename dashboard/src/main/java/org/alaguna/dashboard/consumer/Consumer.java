@@ -1,6 +1,6 @@
 package org.alaguna.dashboard.consumer;
 
-import org.alaguna.dashboard.DomainEvent;
+import org.alaguna.dashboard.shared.DomainEvent;
 
 public interface Consumer {
 

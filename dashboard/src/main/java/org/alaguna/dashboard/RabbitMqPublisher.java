@@ -1,5 +1,6 @@
 package org.alaguna.dashboard;
 
+import org.alaguna.dashboard.shared.DomainEvent;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessagePropertiesBuilder;

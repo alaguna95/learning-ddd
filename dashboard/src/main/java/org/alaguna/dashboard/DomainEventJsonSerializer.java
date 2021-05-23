@@ -1,5 +1,7 @@
 package org.alaguna.dashboard;
 
+import org.alaguna.dashboard.shared.DomainEvent;
+
 import java.io.Serializable;
 import java.util.HashMap;
 

@@ -1,4 +1,6 @@
-package org.alaguna.dashboard;
+package org.alaguna.dashboard.shared;
+
+import org.alaguna.dashboard.Utils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
