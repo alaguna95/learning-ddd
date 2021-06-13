@@ -2,7 +2,11 @@ package org.alaguna.dashboard.consumer;
 
 import org.alaguna.dashboard.shared.DomainEvent;
 
-public interface Consumer {
+import java.lang.annotation.*;
 
-    void on(DomainEvent domainEvent);
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@Inherited
+public @interface Consumer {
+    Class<? extends DomainEvent>[] value();
 }

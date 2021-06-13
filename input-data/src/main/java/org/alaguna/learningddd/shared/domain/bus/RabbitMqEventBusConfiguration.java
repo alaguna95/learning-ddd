@@ -44,7 +44,7 @@ public class RabbitMqEventBusConfiguration {
 
 
     private List<Declarable> createQueueDomainEvents(TopicExchange domainEventsExchange ){
-        String queueName = "increment_training_on_training_created";
+        String queueName = "increment_training_count_on_training_created";
 
 
         List<Declarable> queueAndBinding = new ArrayList<>();
@@ -59,7 +59,7 @@ public class RabbitMqEventBusConfiguration {
         Binding fromExchangeSameQueueBinding2 = BindingBuilder
                 .bind(queue)
                 .to(domainEventsExchange)
-                .with("increment_training_on_training_created");
+                .with("increment_training_count_on_training_created");
 
         queueAndBinding.add(queue);
         queueAndBinding.add(fromExchangeSameQueueBinding);
@@ -73,7 +73,7 @@ public class RabbitMqEventBusConfiguration {
 
         List<Declarable> queueAndBinding = new ArrayList<>();
 
-        String deadLetterQueueName = "dead_letter.increment_training_on_training_created";
+        String deadLetterQueueName = "dead_letter.increment_training_count_on_training_created";
 
 
         Queue deadLetterQueue = QueueBuilder.durable(deadLetterQueueName).build();
@@ -81,7 +81,7 @@ public class RabbitMqEventBusConfiguration {
         Binding fromDeadLetterExchangeSameQueueBinding = BindingBuilder
                 .bind(deadLetterQueue)
                 .to(deadLetterExchange)
-                .with("increment_training_on_training_created");
+                .with("increment_training_count_on_training_created");
 
         queueAndBinding.add(deadLetterQueue);
         queueAndBinding.add(fromDeadLetterExchangeSameQueueBinding);
