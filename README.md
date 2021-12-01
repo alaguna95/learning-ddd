@@ -1,5 +1,20 @@
 ## Learning-ddd
 
+This proyect follows the event driven architure and it has composed by two microservices. Moreover, each microservice have created with the domain driven desing approach. 
+
+Microservices:
+1. **Input-data**, it have the responsibility of process data of the users.
+2. **Dashboard**, it´s purpose is transforming the user-data and presenting the results.
+
+The purpose of this project is **improving technical and soft skills**:
+1.  Inproving writting and reading english level.
+2.  Practising with architectures like event driven and domain driven design.
+3. Building this project let the opportuniy of playing with deploys in plataforms like AWS.
+4. Enjoying with docker.
+5. Increasing the understood of gradle.
+6. Learning rabbitMq.
+
+
 ![image](https://user-images.githubusercontent.com/74345393/144260985-579bd77b-8957-41f7-a1da-e38cb3d9a2f1.png)
 
 
