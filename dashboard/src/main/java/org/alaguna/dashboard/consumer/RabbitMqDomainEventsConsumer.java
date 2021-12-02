@@ -2,26 +2,31 @@ package org.alaguna.dashboard.consumer;
 
 import org.alaguna.dashboard.RabbitMqPublisher;
 import org.alaguna.dashboard.Utils;
-import org.alaguna.dashboard.shared.DomainEvent;
-import org.reflections.Reflections;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 public class RabbitMqDomainEventsConsumer {
 
-    private final static int MAX_RETRIES = 2;
+    private final int MAX_RETRIES = 2;
+    private final String DOMAIN_EVENTS="domain_events";
+    private final String DOMAIN_EVENTS_WITH_DOT=DOMAIN_EVENTS+".";
+    private final String DEAD_LETTER="dead_letter";
+
+
     private final RabbitMqPublisher publisher;
     private final ApplicationContext context;
+
+
 
     @Autowired
     public RabbitMqDomainEventsConsumer(RabbitMqPublisher publisher, ApplicationContext context
@@ -30,47 +35,42 @@ public class RabbitMqDomainEventsConsumer {
         this.context = context;
     }
 
-    @RabbitListener( autoStartup = "true", queues = "increment_training_count_on_training_created")
-    public void consumer(Message message) {
+    @RabbitListener( autoStartup = "true", queues = DOMAIN_EVENTS)
+    public void consumer(@Payload String payload, Message message) {
 
-        String queue = message.getMessageProperties().getConsumerQueue();
+        String routingKey = message.getMessageProperties().getReceivedRoutingKey();
 
         try{
-            Object subscriber = findConsumer(queue);
-
-            Method subscriberOnMethod = subscriber.getClass().getMethod("on" , DomainEvent.class);
-
-            Object[] arguments = new Object[1];
-            arguments[0] = null;
-
-            subscriberOnMethod.invoke(subscriber, arguments);
+            Object subscriber = findConsumer(routingKey);
+            Method subscriberOnMethod = subscriber.getClass().getMethod("on" , String.class);
+            subscriberOnMethod.invoke(subscriber, payload);
 
         } catch (Exception error) {
-            handleConsumptionError(message, queue);
+            handleConsumptionError(message, routingKey);
         }
     }
 
 
-    private void handleConsumptionError(Message message, String queue) {
+    private void handleConsumptionError(Message message, String routingKey) {
         if (hasBeenRedeliveredTooMuch(message)) {
-            sendToDeadLetter(message, queue);
+            sendToDeadLetter(message, routingKey);
         } else {
-            sendToRetry(message, queue);
+            sendToRetry(message, routingKey);
         }
     }
 
-    private void sendToRetry(Message message, String queue) {
-        sendMessageTo("domain_events", message, queue);
+    private void sendToRetry(Message message, String routingKey) {
+        sendMessageTo(DOMAIN_EVENTS, message, routingKey);
     }
 
-    private void sendToDeadLetter(Message message, String queue) {
-        sendMessageTo("dead_letter", message, queue);
+    private void sendToDeadLetter(Message message, String routingKey) {
+        sendMessageTo("dead_letter", message, routingKey);
     }
 
-    private void sendMessageTo(String exchange, Message message, String queue) {
+    private void sendMessageTo(String exchange, Message message, String routingKey) {
         Map<String, Object> headers = message.getMessageProperties().getHeaders();
 
-        headers.put("redelivery_count", (int) headers.getOrDefault("redelivery_count", 0) + 1);
+        headers.put(DEAD_LETTER, (int) headers.getOrDefault("redelivery_count", 0) + 1);
 
         MessageBuilder.fromMessage(message).andProperties(
                 MessagePropertiesBuilder.newInstance()
@@ -79,22 +79,16 @@ public class RabbitMqDomainEventsConsumer {
                         .copyHeaders(headers)
                         .build());
 
-        publisher.publish(message, exchange, queue);
+        publisher.publish(message, exchange, DEAD_LETTER+ "1");
     }
 
     private boolean hasBeenRedeliveredTooMuch(Message message) {
         return (int) message.getMessageProperties().getHeaders().getOrDefault("redelivery_count", 0) >= MAX_RETRIES;
     }
 
-
-    private Object findConsumer(String queue){
-        String[] queueParts     = queue.split("\\.");
-        String   subscriberName = Utils.toCamelFirstLower(queueParts[queueParts.length - 1]);
+    private Object findConsumer(String routingKey){
+        String subscriberName = Utils.toCamelFirstLower(routingKey.replace(DOMAIN_EVENTS_WITH_DOT,""));
         return context.getBean(subscriberName);
     }
-
-
-
-
 
 }
