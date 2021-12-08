@@ -1,6 +1,6 @@
 ## Learning-ddd
 
-This proyect follows the event driven architure and it has composed by two microservices and a library. Moreover, each microservice have created with the domain driven desing approach. 
+This proyect follows the event driven architure and it has composed by two microservices and one library. Moreover, each microservice have created with the domain driven desing approach. 
 
 Microservices:
 1. **Input-data**, it has the responsibility of process data of the users.
@@ -21,10 +21,9 @@ The purpose of this project is **improving technical and soft skills**:
 
 
 
-
 ## Deploy in local environment
 
-Requeriments
+### Requeriments
 * Docker --> https://www.docker.com/get-started
 * Git --> https://git-scm.com/
 * Gradle --> https://gradle.org/
@@ -33,43 +32,59 @@ Requeriments
     * https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/tag/jdk-11.0.12%2B7
  
 
-Docker **general** environment **requeriments**:<br />
-<br />
+### Docker general environment requeriments:
   **-Deploy rabbitMQ**:
 1. Open cmd in the proyect 
 2. Execute --> docker-compose up -d
+ ```
+docker-compose up -d
+```
 3. RabbitMQ is running in --> http://localhost:8090/  --> user: rabbitmq, password: 2020
 
-
-Docker **Input-data** microservice environment **requeriments**:<br />
-<br />
-  **-Deploy postgresql**
-1. Open cmd in the proyect and go to input-data 
+  **-Deploy Input-data postgresql**:
+1. Open cmd in the proyect and go to input-data folder
+```
+cd input-data
+```
 2. Execute docker-compose up -d
+```
+docker-compose up -d
+```
 3. Postgresql is running in localhost:15432, user: postgres, password: 2020
 4. Enter in database and execute the initional script, it is located in input-data/src/main/resources/db/migration
 
-Docker **Dashboard** microservice environment **requeriments**:<br />
-<br />
-  **-Deploy postgresql**
-1. Open cmd in the proyect and go to dashboard
+  **-Deploy Dashboard postgresql**:
+1. Open cmd in the proyect and go to dashboard folder
+```
+cd dashboard
+```
 2. Execute docker-compose up -d
+```
+docker-compose up -d
+```
 3. Postgresql is running in localhost:15433, user: postgres, password: 2020
 4. Enter in database and execute the initional script, it is located in dashboard/src/main/resources/db/migration
 
-Deploying input-data microservice
+### Deploying microservices
 
-* gradlew clean
-* gradlew build
-* gradlew bootRun
+Steps :
+1. Build Shared library
+```
+cd shared 
+gradlew clean
+gradlew build
+```
+2. Build Microservice (Example: Input-data)
+```
+cd input-data 
+gradlew clean
+gradlew build
+```
+3. Run microservice
+```
+gradlew bootRun
+```
 
-Running in localhost:8081
-
-Deploying dashboard microservice
-
-* gradlew clean
-* gradlew build
-* gradlew bootRun
-
-Running in localhost:8082
+Input-data --> Running in localhost:8081<br />
+Dashboard --> Running in localhost:8082
 
