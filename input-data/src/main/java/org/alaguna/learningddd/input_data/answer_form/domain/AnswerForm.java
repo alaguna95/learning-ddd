@@ -3,9 +3,9 @@ package org.alaguna.learningddd.input_data.answer_form.domain;
 import org.alaguna.learningddd.input_data.question_form.domain.QuestionFormId;
 import org.alaguna.learningddd.input_data.question_form.domain.QuestionFormType;
 import org.alaguna.learningddd.input_data.training.domain.TrainingId;
-import org.alaguna.learningddd.shared.domain.AggregateRoot;
 
 import java.util.List;
+import org.alaguna.shared.domain.AggregateRoot;
 
 public class AnswerForm extends AggregateRoot {
 

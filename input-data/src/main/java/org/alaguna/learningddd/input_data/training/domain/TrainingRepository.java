@@ -1,7 +1,5 @@
 package org.alaguna.learningddd.input_data.training.domain;
 
-import org.apache.tomcat.jni.Local;
-
 import java.time.LocalDateTime;
 
 public interface TrainingRepository {

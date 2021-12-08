@@ -1,10 +1,8 @@
 package org.alaguna.learningddd.input_data.training.application;
 
 import org.alaguna.learningddd.input_data.training.domain.*;
-import org.alaguna.learningddd.shared.domain.bus.EventBus;
+import org.alaguna.shared.bus.EventBus;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class TrainingCreator {

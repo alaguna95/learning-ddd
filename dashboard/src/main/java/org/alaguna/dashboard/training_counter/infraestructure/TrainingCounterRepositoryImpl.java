@@ -21,11 +21,11 @@ public class TrainingCounterRepositoryImpl implements TrainingCounterRepository 
     @Override
     public TrainingCounter getTrainingCounter(){
         SqlParameterSource namedParameters = new MapSqlParameterSource().
-                addValue("id", TRAINING_COUNTER_ID);
+            addValue("id", TRAINING_COUNTER_ID);
 
         /*return*/ jdbc.queryForObject(" select id, total ,trainings_ids from training_counter where id = :id",
-                namedParameters,
-                new TrainingCounterRowMapper());
+            namedParameters,
+            new TrainingCounterRowMapper());
 
         return null;
     }

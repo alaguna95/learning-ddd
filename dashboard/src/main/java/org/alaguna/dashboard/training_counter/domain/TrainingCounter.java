@@ -1,8 +1,7 @@
 package org.alaguna.dashboard.training_counter.domain;
 
-import org.alaguna.dashboard.shared.AggregateRoot;
-
 import java.util.List;
+import org.alaguna.shared.domain.AggregateRoot;
 
 public class TrainingCounter extends AggregateRoot {
 

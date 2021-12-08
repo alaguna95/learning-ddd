@@ -7,9 +7,9 @@ import org.alaguna.learningddd.input_data.training.domain.Training;
 import org.alaguna.learningddd.input_data.training.domain.TrainingRepository;
 import org.alaguna.learningddd.objects.TrainingCreateCommandBuilder;
 import org.alaguna.learningddd.objects.TrainingObjectMother;
-import org.alaguna.learningddd.shared.domain.bus.DomainEvent;
-import org.alaguna.learningddd.shared.domain.bus.EventBus;
-import org.alaguna.learningddd.shared.domain.training.TrainingCreatedDomainEvent;
+import org.alaguna.shared.bus.DomainEvent;
+import org.alaguna.shared.bus.EventBus;
+import org.alaguna.shared.events.TrainingCreatedDomainEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

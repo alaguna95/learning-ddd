@@ -1,7 +1,7 @@
 package org.alaguna.dashboard.consumer;
 
-import org.alaguna.dashboard.RabbitMqPublisher;
-import org.alaguna.dashboard.shared.DomainEvent;
+import org.alaguna.shared.bus.DomainEvent;
+import org.alaguna.shared.bus.RabbitMqPublisher;
 import org.springframework.stereotype.Service;
 
 @Service

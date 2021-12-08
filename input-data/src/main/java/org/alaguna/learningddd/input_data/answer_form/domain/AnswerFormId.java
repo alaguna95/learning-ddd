@@ -1,6 +1,7 @@
 package org.alaguna.learningddd.input_data.answer_form.domain;
 
-import org.alaguna.learningddd.shared.domain.Identifier;
+
+import org.alaguna.shared.domain.Identifier;
 
 public class AnswerFormId extends Identifier {
 

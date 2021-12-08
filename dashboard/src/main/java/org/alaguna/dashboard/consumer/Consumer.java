@@ -1,8 +1,8 @@
 package org.alaguna.dashboard.consumer;
 
-import org.alaguna.dashboard.shared.DomainEvent;
 
 import java.lang.annotation.*;
+import org.alaguna.shared.bus.DomainEvent;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
