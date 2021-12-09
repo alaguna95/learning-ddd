@@ -1,6 +1,7 @@
 package org.alaguna.shared.bus;
 
 
+import org.alaguna.shared.utils.Constants;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.context.annotation.Bean;
@@ -27,9 +28,8 @@ public class RabbitMqEventBusConfiguration {
     @Bean
     public Declarables declaration() {
 
-
-        TopicExchange domainEventsExchange = new TopicExchange("domain_events", true, false);
-        TopicExchange deadLetterExchange = new TopicExchange("dead_letter", true, false);
+        TopicExchange domainEventsExchange = new TopicExchange(Constants.DOMAIN_EVENTS, true, false);
+        TopicExchange deadLetterExchange = new TopicExchange(Constants.DEAD_LETTER, true, false);
 
         List<Declarable> declarables = new ArrayList<>();
         declarables.add(domainEventsExchange);
@@ -44,17 +44,15 @@ public class RabbitMqEventBusConfiguration {
 
 
     private List<Declarable> createQueueDomainEvents(TopicExchange domainEventsExchange ){
-        String queueName = "domain_events";
-
 
         List<Declarable> queueAndBinding = new ArrayList<>();
 
-        Queue queue = QueueBuilder.durable(queueName).build();
+        Queue queue = QueueBuilder.durable(Constants.DOMAIN_EVENTS).build();
 
         Binding fromExchangeSameQueueBinding = BindingBuilder
                 .bind(queue)
                 .to(domainEventsExchange)
-                .with("domain_events.#");
+                .with(Constants.DOMAIN_EVENTS_WITH_ASTERISK);
 
         queueAndBinding.add(queue);
         queueAndBinding.add(fromExchangeSameQueueBinding);
@@ -64,22 +62,17 @@ public class RabbitMqEventBusConfiguration {
 
     private List<Declarable> createQueueDeadLetter(TopicExchange deadLetterExchange){
 
-
         List<Declarable> queueAndBinding = new ArrayList<>();
 
-        String deadLetterQueueName = "dead_letter";
-
-
-        Queue deadLetterQueue = QueueBuilder.durable(deadLetterQueueName).build();
+        Queue deadLetterQueue = QueueBuilder.durable(Constants.DEAD_LETTER).build();
 
         Binding fromDeadLetterExchangeSameQueueBinding = BindingBuilder
                 .bind(deadLetterQueue)
                 .to(deadLetterExchange)
-                .with("dead_letter.#");
+                .with(Constants.DEAD_LETTER_WITH_ASTERISK);
 
         queueAndBinding.add(deadLetterQueue);
         queueAndBinding.add(fromDeadLetterExchangeSameQueueBinding);
-
 
         return queueAndBinding;
     }

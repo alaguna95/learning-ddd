@@ -1,12 +1,11 @@
 package org.alaguna.dashboard.consumer;
 
-import org.alaguna.shared.bus.DomainEvent;
+import org.alaguna.shared.bus.Consumer;
 import org.alaguna.shared.bus.RabbitMqPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
-@Consumer({DomainEvent.class})
-public class TrainingCreated {
+public class TrainingCreated implements Consumer {
 
     private final RabbitMqPublisher publisher;
 
@@ -14,7 +13,10 @@ public class TrainingCreated {
         this.publisher = publisher;
     }
 
+    @Override
     public void on(String payload){
+        
         System.out.println("OLA "+payload);
+        throw new IllegalArgumentException("PRUEBA");
     }
 }

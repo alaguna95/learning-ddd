@@ -1,5 +1,7 @@
-package org.alaguna.shared.bus;
+package org.alaguna.dashboard.consumer;
 
+import org.alaguna.shared.bus.RabbitMqPublisher;
+import org.alaguna.shared.utils.Constants;
 import org.alaguna.shared.utils.Utils;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
@@ -17,14 +19,11 @@ import java.util.Map;
 public class RabbitMqDomainEventsConsumer {
 
     private final int MAX_RETRIES = 2;
-    private final String DOMAIN_EVENTS="domain_events";
-    private final String DOMAIN_EVENTS_WITH_DOT=DOMAIN_EVENTS+".";
-    private final String DEAD_LETTER="dead_letter";
-
+    private final String REDELIVERY_COUNT = "redelivery_count";
+    private final String METHOD_NAME = "on";
 
     private final RabbitMqPublisher publisher;
     private final ApplicationContext context;
-
 
 
     @Autowired
@@ -34,14 +33,14 @@ public class RabbitMqDomainEventsConsumer {
         this.context = context;
     }
 
-    @RabbitListener( autoStartup = "true", queues = DOMAIN_EVENTS)
+    @RabbitListener( autoStartup = "true", queues = Constants.DOMAIN_EVENTS)
     public void consumer(@Payload String payload, Message message) {
 
         String routingKey = message.getMessageProperties().getReceivedRoutingKey();
 
         try{
             Object subscriber = findConsumer(routingKey);
-            Method subscriberOnMethod = subscriber.getClass().getMethod("on" , String.class);
+            Method subscriberOnMethod = subscriber.getClass().getMethod(METHOD_NAME, String.class);
             subscriberOnMethod.invoke(subscriber, payload);
 
         } catch (Exception error) {
@@ -59,17 +58,18 @@ public class RabbitMqDomainEventsConsumer {
     }
 
     private void sendToRetry(Message message, String routingKey) {
-        sendMessageTo(DOMAIN_EVENTS, message, routingKey);
+        sendMessageTo(Constants.DOMAIN_EVENTS, message, routingKey);
     }
 
     private void sendToDeadLetter(Message message, String routingKey) {
-        sendMessageTo("dead_letter", message, routingKey);
+        String routingKeyDeadLetter = routingKey.replace(Constants.DOMAIN_EVENTS, Constants.DEAD_LETTER);
+        sendMessageTo(Constants.DEAD_LETTER, message, routingKeyDeadLetter);
     }
 
     private void sendMessageTo(String exchange, Message message, String routingKey) {
         Map<String, Object> headers = message.getMessageProperties().getHeaders();
 
-        headers.put(DEAD_LETTER, (int) headers.getOrDefault("redelivery_count", 0) + 1);
+        headers.put(REDELIVERY_COUNT, (int) headers.getOrDefault(REDELIVERY_COUNT, 0) + 1);
 
         MessageBuilder.fromMessage(message).andProperties(
                 MessagePropertiesBuilder.newInstance()
@@ -78,15 +78,15 @@ public class RabbitMqDomainEventsConsumer {
                         .copyHeaders(headers)
                         .build());
 
-        publisher.publish(message, exchange, DEAD_LETTER+ "1");
+        publisher.publish(message, exchange, routingKey);
     }
 
     private boolean hasBeenRedeliveredTooMuch(Message message) {
-        return (int) message.getMessageProperties().getHeaders().getOrDefault("redelivery_count", 0) >= MAX_RETRIES;
+        return (int) message.getMessageProperties().getHeaders().getOrDefault(REDELIVERY_COUNT, 0) >= MAX_RETRIES;
     }
 
     private Object findConsumer(String routingKey){
-        String subscriberName = Utils.toCamelFirstLower(routingKey.replace(DOMAIN_EVENTS_WITH_DOT,""));
+        String subscriberName = Utils.toCamelFirstLower(routingKey.replace(Constants.DOMAIN_EVENTS_WITH_DOT,""));
         return context.getBean(subscriberName);
     }
 
