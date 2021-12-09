@@ -4,6 +4,7 @@ package org.alaguna.shared.bus;
 import org.alaguna.shared.utils.Constants;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,14 +14,27 @@ import java.util.List;
 @Configuration
 public class RabbitMqEventBusConfiguration {
 
+    @Value( "${rabbit.host}" )
+    private String rabbitHost;
+
+    @Value( "${rabbit.port}" )
+    private Integer rabbitPort;
+
+    @Value( "${rabbit.username}" )
+    private String rabbitUsername;
+
+    @Value( "${rabbit.password}" )
+    private String rabbitPassword;
+
+
     @Bean
     public CachingConnectionFactory connection()  {
         CachingConnectionFactory factory = new CachingConnectionFactory();
 
-        factory.setHost("localhost");
-        factory.setPort(5630);
-        factory.setUsername("rabbitmq");
-        factory.setPassword("2020");
+        factory.setHost(rabbitHost);
+        factory.setPort(rabbitPort);
+        factory.setUsername(rabbitUsername);
+        factory.setPassword(rabbitPassword);
 
         return factory;
     }
