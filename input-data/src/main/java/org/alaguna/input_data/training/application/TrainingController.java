@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 public class TrainingController {
 
-    private TrainingCreator trainerCreator;
+    private TrainingCreate trainerCreate;
 
-    public TrainingController(TrainingCreator trainerCreator) {
-        this.trainerCreator = trainerCreator;
+    public TrainingController(TrainingCreate trainerCreate) {
+        this.trainerCreate = trainerCreate;
     }
 
     @PostMapping("/trainings")
     public ResponseEntity<Object> createTraining(@RequestBody TrainingCreateCommand command){
-        trainerCreator.createTraining(command);
+        trainerCreate.createTraining(command);
         return ResponseEntity.noContent().build();
     }
 }

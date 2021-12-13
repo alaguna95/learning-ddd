@@ -5,13 +5,13 @@ import org.alaguna.shared.bus.EventBus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TrainingCreator {
+public class TrainingCreate {
 
     private TrainingRepository trainingRepository;
     private TrainingValidator trainingValidator;
     private EventBus eventBus;
 
-    public TrainingCreator(TrainingRepository trainingRepository, TrainingValidator trainingValidator, EventBus eventBus) {
+    public TrainingCreate(TrainingRepository trainingRepository, TrainingValidator trainingValidator, EventBus eventBus) {
         this.trainingRepository = trainingRepository;
         this.trainingValidator = trainingValidator;
         this.eventBus = eventBus;

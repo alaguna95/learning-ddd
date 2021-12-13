@@ -1,7 +1,7 @@
 package org.alaguna.input_data.unit;
 
 import org.alaguna.input_data.training.application.TrainingCreateCommand;
-import org.alaguna.input_data.training.application.TrainingCreator;
+import org.alaguna.input_data.training.application.TrainingCreate;
 import org.alaguna.input_data.training.application.TrainingValidator;
 import org.alaguna.input_data.training.domain.Training;
 import org.alaguna.input_data.training.domain.TrainingRepository;
@@ -19,9 +19,9 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class TrainingCreatorTest {
+public class TrainingCreateTest {
 
-    private TrainingCreator trainingCreator;
+    private TrainingCreate trainingCreate;
 
     private TrainingRepository trainingRepository;
 
@@ -32,41 +32,41 @@ public class TrainingCreatorTest {
         trainingRepository = mock(TrainingRepository.class);
         eventBus = mock(EventBus.class);
         TrainingValidator trainingValidator = new TrainingValidator(trainingRepository);
-        trainingCreator = new TrainingCreator( trainingRepository,trainingValidator, eventBus);
+        trainingCreate = new TrainingCreate( trainingRepository,trainingValidator, eventBus);
     }
 
     @Test
     public void throwExceptionWhenIdIsNull(){
 
-        assertThrows(NullPointerException.class , () -> trainingCreator.createTraining(
+        assertThrows(NullPointerException.class , () -> trainingCreate.createTraining(
                 new TrainingCreateCommandBuilder().withId(null).build()));
 
     }
 
     @Test
     public void throwExceptionWhenIdIsNotUUID(){
-        assertThrows(IllegalArgumentException.class , () -> trainingCreator.createTraining(
+        assertThrows(IllegalArgumentException.class , () -> trainingCreate.createTraining(
                 new TrainingCreateCommandBuilder().withId("12121AS").build()));
 
     }
 
     @Test
     public void throwExceptionWhenStartIsNull(){
-        assertThrows(IllegalArgumentException.class , () -> trainingCreator.createTraining(
+        assertThrows(IllegalArgumentException.class , () -> trainingCreate.createTraining(
                 new TrainingCreateCommandBuilder().withStart(null).build()));
 
     }
 
     @Test
     public void throwExceptionWhenEndIsNull(){
-        assertThrows(IllegalArgumentException.class , () -> trainingCreator.createTraining(
+        assertThrows(IllegalArgumentException.class , () -> trainingCreate.createTraining(
                 new TrainingCreateCommandBuilder().withEnd(null).build()));
 
     }
 
     @Test
     public void throwExceptionWhenStartEqualsEnd(){
-        assertThrows(IllegalArgumentException.class , () -> trainingCreator.createTraining(
+        assertThrows(IllegalArgumentException.class , () -> trainingCreate.createTraining(
                 new TrainingCreateCommandBuilder().withStart(LocalDateTime.of(2020,1,1,17,30))
                         .withEnd(LocalDateTime.of(2020,1,1,17,30)).build()));
 
@@ -75,7 +75,7 @@ public class TrainingCreatorTest {
 
     @Test
     public void throwExceptionWhenStartAfterEnd(){
-        assertThrows(IllegalArgumentException.class , () -> trainingCreator.createTraining(
+        assertThrows(IllegalArgumentException.class , () -> trainingCreate.createTraining(
                 new TrainingCreateCommandBuilder().withStart(LocalDateTime.of(2020,1,1,18,30))
                         .withEnd(LocalDateTime.of(2020,1,1,17,30)).build()));
 
@@ -88,7 +88,7 @@ public class TrainingCreatorTest {
 
         when(trainingRepository.existSomeTrainingInThisPeriod(command.getStart(), command.getFinish())).thenReturn(true);
 
-        assertThrows(IllegalArgumentException.class , () -> trainingCreator.createTraining(command));
+        assertThrows(IllegalArgumentException.class , () -> trainingCreate.createTraining(command));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class TrainingCreatorTest {
 
         when(trainingRepository.existSomeTrainingInThisPeriod(command.getStart(), command.getFinish())).thenReturn(false);
 
-        trainingCreator.createTraining(command);
+        trainingCreate.createTraining(command);
 
         verify(trainingRepository, times(1)).createTraining(training);
         verify(eventBus, times(1)).publish(Arrays.asList(event));
