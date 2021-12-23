@@ -26,6 +26,9 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.6.1'
+	implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.8.1'
+
 	implementation files('../shared/build/libs/shared-0.0.1-SNAPSHOT-plain.jar')
 }
 
