@@ -41,3 +41,9 @@ out/
 gradle/*
 gradlew
 gradlew.bat
+
+#elastic autogenerate files
+logging/var
+
+#log files
+*.log

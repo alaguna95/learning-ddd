@@ -1,0 +1,66 @@
+version: '3.7'
+
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    container_name: elasticsearch
+    ports: ['9200:9200']
+    environment:
+      - "ELASTIC_PASSWORD=elastic"
+      - "bootstrap.memory_lock=true"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "discovery.type=single-node"
+      - "TAKE_FILE_OWNERSHIP=1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - './var/elasticsearch:/usr/share/elasticsearch/data'
+
+  logstash-input-data:
+    image: docker.elastic.co/logstash/logstash:7.5.0
+    container_name: logstash-input-data
+    environment:
+      - "ELASTIC_PASSWORD=elastic"
+    ports: ['9600:9600']
+    depends_on: ['elasticsearch']
+    volumes:
+      - './input-data:/usr/share/logstash/pipeline'
+      - '../input-data/logs:/logs'
+
+  logstash-dashboard:
+    image: docker.elastic.co/logstash/logstash:7.5.0
+    container_name: logstash-dashboard
+    environment:
+      - "ELASTIC_PASSWORD=elastic"
+    ports: [ '9601:9600' ]
+    depends_on: [ 'elasticsearch' ]
+    volumes:
+      - './dashboard:/usr/share/logstash/pipeline'
+      - '../dashboard/logs:/logs'
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.0
+    container_name: kibana
+    environment:
+      - "ELASTIC_PASSWORD=elastic"
+    ports: ['5601:5601']
+    depends_on:
+      - elasticsearch
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.5.0
+    ports:
+      - 8200:8200
+    environment:
+      - output.elasticsearch.hosts=['http://elasticsearch:9200']
+      - apm-server.host="0.0.0.0:8200"
+      - apm-server.secret_token="xxVpmQB2HMzCL9PgBHVrnxjNXXw5J7bd79DFm6sjBJR5HPXDhcF8MSb3vv4bpg44"
+      - setup.kibana.host="kibana:5601"
+      - setup.template.enabled=true
+      - logging.to_files=false
+    depends_on:
+      - elasticsearch
+      - kibana
