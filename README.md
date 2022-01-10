@@ -1,6 +1,6 @@
 ## Learning-ddd
 
-This proyect follows the event driven architure and it has composed by two microservices and one library. Moreover, each microservice have created with the domain driven desing approach. 
+This project follows the event driven architecture and it has composed by two microservices and one library. Moreover, each microservice have created with the domain driven design approach. 
 
 Microservices:
 1. **Input-data**, it has the responsibility of process data of the users.
@@ -10,9 +10,9 @@ Libraries:
 1. **Shared**, It contains the common code for the microservices.
 
 The purpose of this project is **improving technical and soft skills**:
-1.  Inproving writting and reading english level.
-2.  Practising with architectures like event driven and domain driven design.
-3. Building this project let the opportuniy of playing with deploys in plataforms like AWS.
+1.  Improving writing and reading English level.
+2.  Practicing with architectures like event driven and domain driven design.
+3. Building this project let the opportunity of playing with deploys in platforms like AWS.
 4. Enjoying with docker.
 5. Increasing the understood of gradle.
 6. Learning rabbitMq.
@@ -23,7 +23,7 @@ The purpose of this project is **improving technical and soft skills**:
 
 ## Deploy in local environment
 
-### Requeriments
+### Requirements
 * Docker --> https://www.docker.com/get-started
 * Git --> https://git-scm.com/
 * Gradle --> https://gradle.org/
@@ -32,9 +32,9 @@ The purpose of this project is **improving technical and soft skills**:
     * https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/tag/jdk-11.0.12%2B7
  
 
-### Docker general environment requeriments:
+### Docker general environment requirements:
   **-Deploy rabbitMQ**:
-1. Open cmd in the proyect 
+1. Open cmd in the project 
 2. Execute --> docker-compose up -d
  ```
 docker-compose up -d
@@ -42,7 +42,7 @@ docker-compose up -d
 3. RabbitMQ is running in --> http://localhost:8090/  --> user: rabbitmq, password: 2020
 
   **-Deploy Input-data postgresql**:
-1. Open cmd in the proyect and go to input-data folder
+1. Open cmd in the project and go to input-data folder
 ```
 cd input-data
 ```
@@ -51,10 +51,10 @@ cd input-data
 docker-compose up -d
 ```
 3. Postgresql is running in localhost:15432, user: postgres, password: 2020
-4. Enter in database and execute the initional script, it is located in input-data/src/main/resources/db/migration
+4. Enter in database and execute the initial script, it is located in input-data/src/main/resources/db/migration
 
   **-Deploy Dashboard postgresql**:
-1. Open cmd in the proyect and go to dashboard folder
+1. Open cmd in the project and go to dashboard folder
 ```
 cd dashboard
 ```
@@ -63,7 +63,7 @@ cd dashboard
 docker-compose up -d
 ```
 3. Postgresql is running in localhost:15433, user: postgres, password: 2020
-4. Enter in database and execute the initional script, it is located in dashboard/src/main/resources/db/migration
+4. Enter in database and execute the initial script, it is located in dashboard/src/main/resources/db/migration
 
 ### Deploying microservices
 
