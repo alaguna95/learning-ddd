@@ -31,6 +31,7 @@ dependencies {
 
 	implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.0.1'
 	implementation group: 'co.elastic.apm', name: 'apm-agent-attach', version: '1.25.0'
+	implementation group: 'co.elastic.apm', name: 'apm-agent-api', version: '1.25.0'
 
 	implementation files('../shared/build/libs/shared-0.0.1-SNAPSHOT-plain.jar')
 }

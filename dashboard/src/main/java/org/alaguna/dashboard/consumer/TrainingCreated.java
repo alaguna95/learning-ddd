@@ -15,8 +15,6 @@ public class TrainingCreated implements Consumer {
 
     @Override
     public void on(String payload){
-        
         System.out.println("OLA "+payload);
-        throw new IllegalArgumentException("PRUEBA");
     }
 }

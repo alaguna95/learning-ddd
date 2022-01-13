@@ -1,5 +1,7 @@
 package org.alaguna.dashboard.consumer;
 
+import co.elastic.apm.api.ElasticApm;
+import co.elastic.apm.api.Transaction;
 import org.alaguna.shared.bus.RabbitMqPublisher;
 import org.alaguna.shared.utils.Constants;
 import org.alaguna.shared.utils.Utils;
@@ -39,9 +41,22 @@ public class RabbitMqDomainEventsConsumer {
         String routingKey = message.getMessageProperties().getReceivedRoutingKey();
 
         try{
-            Object subscriber = findConsumer(routingKey);
-            Method subscriberOnMethod = subscriber.getClass().getMethod(METHOD_NAME, String.class);
-            subscriberOnMethod.invoke(subscriber, payload);
+            String consumerName = getConsumerName(routingKey);
+            Object consumer = findConsumer(consumerName);
+            Method subscriberOnMethod = consumer.getClass().getMethod(METHOD_NAME, String.class);
+
+            ElasticApm.currentTransaction().end();
+            Transaction transaction = ElasticApm.startTransaction();
+            try {
+                transaction.setName(consumerName);
+                transaction.setType("messaging");
+                subscriberOnMethod.invoke(consumer, payload);
+            } catch (Exception e) {
+                transaction.captureException(e);
+                throw e;
+            } finally {
+                transaction.end();
+            }
 
         } catch (Exception error) {
             handleConsumptionError(message, routingKey);
@@ -85,9 +100,12 @@ public class RabbitMqDomainEventsConsumer {
         return (int) message.getMessageProperties().getHeaders().getOrDefault(REDELIVERY_COUNT, 0) >= MAX_RETRIES;
     }
 
-    private Object findConsumer(String routingKey){
-        String subscriberName = Utils.toCamelFirstLower(routingKey.replace(Constants.DOMAIN_EVENTS_WITH_DOT,""));
-        return context.getBean(subscriberName);
+    private String getConsumerName(String routingKey){
+        return Utils.toCamelFirstLower(routingKey.replace(Constants.DOMAIN_EVENTS_WITH_DOT,""));
+    }
+
+    private Object findConsumer(String consumerName){
+        return context.getBean(consumerName);
     }
 
 }
