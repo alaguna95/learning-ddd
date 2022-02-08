@@ -1,7 +1,10 @@
 package org.alaguna.dashboard.consumer;
 
 import co.elastic.apm.api.ElasticApm;
+import co.elastic.apm.api.Scope;
 import co.elastic.apm.api.Transaction;
+import java.lang.reflect.InvocationTargetException;
+import lombok.extern.slf4j.Slf4j;
 import org.alaguna.shared.bus.RabbitMqPublisher;
 import org.alaguna.shared.utils.Constants;
 import org.alaguna.shared.utils.Utils;
@@ -18,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class RabbitMqDomainEventsConsumer {
 
     private final int MAX_RETRIES = 2;
@@ -43,17 +47,22 @@ public class RabbitMqDomainEventsConsumer {
         try{
             String consumerName = getConsumerName(routingKey);
             Object consumer = findConsumer(consumerName);
-            Method subscriberOnMethod = consumer.getClass().getMethod(METHOD_NAME, String.class);
+            Method subscriberOnMethod = consumer.getClass().getMethod(METHOD_NAME, String.class, Message.class);
 
-            ElasticApm.currentTransaction().end();
-            Transaction transaction = ElasticApm.startTransaction();
-            try {
+            Transaction transaction = ElasticApm.startTransactionWithRemoteParent(key -> message.getMessageProperties()
+                .getHeader("traceparent"));
+            try(final Scope scope = transaction.activate()) {
                 transaction.setName(consumerName);
                 transaction.setType("messaging");
-                subscriberOnMethod.invoke(consumer, payload);
+                subscriberOnMethod.invoke(consumer, payload, message);
+            } catch (InvocationTargetException ite){
+                transaction.captureException(ite.getCause());
+                //log.error("[consumer] InvocationTargetException: ", ite.getCause());
+                handleConsumptionError(message, routingKey);
             } catch (Exception e) {
                 transaction.captureException(e);
-                throw e;
+                //log.error("[consumer] Exception: ", e);
+                handleConsumptionError(message, routingKey);
             } finally {
                 transaction.end();
             }
