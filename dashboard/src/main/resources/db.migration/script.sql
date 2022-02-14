@@ -1,8 +1,10 @@
+create schema dashboard;
+
 -- Training table
-create table training_counter (
+create table dashboard.training_counter (
    id varchar(50) not null,
    total integer not null,
-   trainings_ids jsonb not null
+   trainings_ids JSON not null
 );
 
-insert into training_counter(id, total, trainings_ids) values('1', 0, '{"trainingIds":["2","4"]}');
+insert into dashboard.training_counter(id, total, trainings_ids) values('1', 0, '{"trainingIds":["2","4"]}');

@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -20,7 +20,7 @@ public class AcceptanceTests {
     protected MockMvc mockMvc;
 
     @Container
-    protected static PostgreSQLContainer container = new PostgreSQLContainer("postgres:13.1")
+    protected static MySQLContainer container = new MySQLContainer("mysql:8.0.28")
             .withUsername("duke")
             .withPassword("password")
             .withDatabaseName("test");
